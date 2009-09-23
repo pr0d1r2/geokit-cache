@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{geokit-cache}
-  s.version = "1.0.0"
+  s.version = "1.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Marcin Nowicki"]
@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
      "generators/geokit_cache/geokit_cache_generator.rb",
      "generators/geokit_cache/templates/model.rb",
      "generators/geokit_cache/templates/model_spec.rb",
+     "geokit-cache.gemspec",
      "lib/geokit-cache.rb",
      "lib/geokit/cache/active_record.rb",
      "lib/geokit/cache/model.rb",

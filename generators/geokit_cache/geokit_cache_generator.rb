@@ -1,4 +1,4 @@
-class GeokitCachedGenerator < RspecModelGenerator
+class GeokitCacheGenerator < RspecModelGenerator
 
   def initialize(runtime_args, runtime_options = {})
     runtime_args = [
