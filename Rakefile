@@ -11,6 +11,9 @@ begin
     gem.homepage = "http://github.com/Pr0d1r2/geokit-cache"
     gem.authors = ["Marcin Nowicki"]
     gem.add_development_dependency "rspec"
+    gem.add_development_dependency "Pr0d1r2-active_record_connectionless"
+    gem.add_development_dependency "Pr0d1r2-active_record_geocodable"
+    gem.add_development_dependency "htmlentities"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
 rescue LoadError
