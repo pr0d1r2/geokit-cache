@@ -212,7 +212,6 @@ describe GeokitCache do
     end
   end
 
-
   describe 'decode_html_entities_in_text_attributes' do
     it 'should decode html-entities in all text attributes when geocoding was successful' do
       @geokit_cache.should_receive(:geocoding_successful?).and_return(true)
@@ -233,6 +232,12 @@ describe GeokitCache do
     end
   end
 
+  it 'make_complete_address_downcase should make complete_address downcase' do
+    @geokit_cache.complete_address = 'Complete Address'
+    @geokit_cache.make_complete_address_downcase
+    @geokit_cache.complete_address.should == 'complete address'
+  end
+
   describe 'class method' do
     it 'geocode should return geoloc for updated or new record' do
       record = mock(GeokitCache)
@@ -241,16 +246,16 @@ describe GeokitCache do
       GeokitCache.geocode(:complete_address)
     end
 
-    describe 'find_or_create' do
+    describe 'find_or_create_by_complete_address' do
       it 'should return existing record' do
-        GeokitCache.should_receive(:find_by_complete_address).with(:complete_address).and_return(:record)
-        GeokitCache.find_or_create(:complete_address).should == :record
+        GeokitCache.should_receive(:find_by_complete_address).with('complete_address').and_return(:record)
+        GeokitCache.find_or_create_by_complete_address('Complete_Address').should == :record
       end
 
       it 'should create new record when record does not exist in database' do
-        GeokitCache.should_receive(:find_by_complete_address).with(:complete_address)
-        GeokitCache.should_receive(:new).with(:complete_address => :complete_address).and_return(:new_record)
-        GeokitCache.find_or_create(:complete_address).should == :new_record
+        GeokitCache.should_receive(:find_by_complete_address).with('complete_address')
+        GeokitCache.should_receive(:new).with(:complete_address => 'complete_address').and_return(:new_record)
+        GeokitCache.find_or_create_by_complete_address('Complete_Address').should == :new_record
       end
     end
   end

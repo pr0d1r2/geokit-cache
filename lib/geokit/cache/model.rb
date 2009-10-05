@@ -25,6 +25,7 @@ module Geokit
       def self.included(base)
         base.class_eval do
           before_save :decode_html_entities_in_text_attributes
+          before_save :make_complete_address_downcase
           is_geocodable :require => true
           base.extend(ClassMethods)
         end
@@ -92,14 +93,18 @@ module Geokit
         TEXT_ATTRIBUTES.each {|a| self.send("#{a}=", HTMLEntities.new.decode(self.send(a)))} if geocoding_successful?
       end
 
+      def make_complete_address_downcase
+        self.complete_address = complete_address.downcase
+      end
+
       module ClassMethods
         def geocode(complete_address)
           record = find_or_create(complete_address)
           record.update_and_return!
         end
 
-        def find_or_create(complete_address)
-          find_by_complete_address(complete_address) || new(:complete_address => complete_address)
+        def find_or_create_by_complete_address(complete_address)
+          find_by_complete_address(complete_address.downcase) || new(:complete_address => complete_address.downcase)
         end
       end
 
