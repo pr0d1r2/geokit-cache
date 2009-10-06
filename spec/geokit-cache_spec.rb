@@ -232,10 +232,10 @@ describe GeokitCache do
     end
   end
 
-  it 'make_complete_address_downcase should make complete_address downcase' do
+  it 'make_complete_address_prepared should use class prepare_complete_address' do
     @geokit_cache.complete_address = 'Complete Address'
-    @geokit_cache.make_complete_address_downcase
-    @geokit_cache.complete_address.should == 'complete address'
+    GeokitCache.should_receive(:prepare_complete_address).with('Complete Address').and_return('complete address')
+    @geokit_cache.make_complete_address_prepared.should == 'complete address'
   end
 
   describe 'class method' do
@@ -256,6 +256,23 @@ describe GeokitCache do
         GeokitCache.should_receive(:find_by_complete_address).with('complete_address')
         GeokitCache.should_receive(:new).with(:complete_address => 'complete_address').and_return(:new_record)
         GeokitCache.find_or_create_by_complete_address('Complete_Address').should == :new_record
+      end
+    end
+
+    describe 'prepare_complete_address' do
+      it 'should make complete_address downcase' do
+        GeokitCache.prepare_complete_address('Complete Address').should == 'complete address'
+      end
+
+      it 'should strip leading and trailing spaces' do
+        GeokitCache.prepare_complete_address("\n\t complete address \n\t").should  == 'complete address'
+      end
+
+      it 'should properly strip colons' do
+        GeokitCache.prepare_complete_address('complete,   address,country').should == 'complete, address, country'
+        GeokitCache.prepare_complete_address('complete,,   address,,country').should == 'complete, address, country'
+        GeokitCache.prepare_complete_address('complete, ,   address, ,country').should == 'complete, address, country'
+        GeokitCache.prepare_complete_address("complete, \t,   address, \t,country").should == 'complete, address, country'
       end
     end
   end
